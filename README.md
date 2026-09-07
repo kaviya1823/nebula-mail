@@ -61,7 +61,7 @@ Gmail Infrastructure
   ↓
 Google Cloud Pub/Sub Topic & Push Subscription
   ↓
-Express Webhook Endpoint (/api/webhooks/gmail)
+Express Webhook Endpoint (/api/gmail/webhook)
   ↓
 Server-Sent Events Broadcast (/api/events)
   ↓
@@ -89,7 +89,7 @@ The AI assistant operates via structured function calling rather than direct DOM
 
 ## 5. AI Tool Specifications
 
-The application implements the following 12 tool and context definitions:
+The application implements the following 13 tool and context definitions:
 
 | Tool Name | Parameters | Purpose & UI Action |
 | :--- | :--- | :--- |
@@ -158,15 +158,15 @@ To enable automatic real-time inbox synchronization without manual refreshing:
 2. **Create Push Subscription**:
    - Create a subscription for `nebula-mail-topic`.
    - Delivery type: **Push**.
-   - Endpoint URL: `https://<your-domain-or-ngrok>/api/webhooks/gmail`.
+   - Endpoint URL: `https://<your-domain-or-ngrok>/api/gmail/webhook`.
 3. **Local Development Tunnel (ngrok)**:
    - Run ngrok to expose port 5000:
      ```bash
      ngrok http 5000
      ```
-   - Update your Pub/Sub subscription endpoint URL to `https://<your-ngrok-id>.ngrok-free.app/api/webhooks/gmail`.
+   - Update your Pub/Sub subscription endpoint URL to `https://<your-ngrok-id>.ngrok-free.app/api/gmail/webhook`.
 4. **Backend Webhook Handling**:
-   - The backend `/api/webhooks/gmail` endpoint receives push notifications, decodes incoming message payloads, and broadcasts events over Server-Sent Events (`/api/events`).
+   - The backend `/api/gmail/webhook` endpoint receives push notifications, decodes incoming message payloads, and broadcasts events over Server-Sent Events (`/api/events`).
    - The React frontend listens via `EventSource` and silently refreshes the inbox list.
 
 ---
@@ -207,7 +207,7 @@ PORT=5000
 
 ```powershell
 # 1. Clone repository
-git clone https://github.com/your-repo/nebula_mail.git
+git clone https://github.com/kaviya1823/nebula-mail.git
 cd nebula_mail
 
 # 2. Install backend dependencies
@@ -306,7 +306,6 @@ Try the following natural language prompts in the AI Assistant chat drawer to ve
 
 ## 15. Future Improvements
 
-- **Full Multi-Message Thread UI**: Expand thread support to render accordion-style conversation trees.
 - **Attachment Upload & Download**: Support sending and previewing email attachments via Gmail API.
 - **Production Webhook Infrastructure**: Deploy cloud webhook endpoints with automated watch renewal cron jobs.
 - **Expanded Label & Filter Management**: Create and apply custom Gmail labels directly from the UI.
@@ -324,7 +323,7 @@ nebula_mail/
 │   ├── services/
 │   │   └── gmailService.js         # Gmail API, OAuth, MIME extraction & HTML stripping
 │   ├── tests/
-│   │   └── test_suite.js           # Automated test suite (9 tests)
+│   │   └── test_suite.js           # Automated test suite (11 tests)
 │   ├── .env.example                # Template for backend environment variables
 │   ├── package.json                # Backend dependencies & scripts
 │   └── server.js                   # Express server, OAuth & Assistant endpoints
