@@ -1,10 +1,15 @@
 const { google } = require("googleapis");
 const Database = require("better-sqlite3");
+const fs = require("fs");
 const path = require("path");
 
-const db = new Database(
-    path.join(__dirname, "..", "db", "database.sqlite")
-);
+const dbPath = path.join(__dirname, "..", "db", "database.sqlite");
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+}
+
+const db = new Database(dbPath);
 
 db.prepare(`
     CREATE TABLE IF NOT EXISTS gmail_watch_state (

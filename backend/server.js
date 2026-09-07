@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 5000;
 const dbFolder = path.join(__dirname, "db");
 
 if (!fs.existsSync(dbFolder)) {
-    fs.mkdirSync(dbFolder);
+    fs.mkdirSync(dbFolder, { recursive: true });
 }
 
 const db = new Database(
