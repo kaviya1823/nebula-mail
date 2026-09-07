@@ -21,6 +21,12 @@ Unlike chat widgets that merely output text, the Nebula Mail AI assistant unders
 
 ---
 
+## Demo Video
+
+[Watch the Nebula Mail Demo](https://drive.google.com/drive/folders/1coMysFeo3E1GXUF1t66017xk_M6ckeEC?usp=sharing)
+
+---
+
 ## 2. Implemented Features
 
 - **Google OAuth 2.0 Authentication**: Official Google login with persistent SQLite token storage (`oauth_tokens`) allowing seamless session persistence across server restarts.
@@ -362,7 +368,7 @@ Try the following natural language prompts in the AI Assistant chat drawer to ve
 nebula_mail/
 ├── backend/
 │   ├── db/
-│   │   └── nebula_mail.db          # SQLite database (OAuth tokens)
+│   │   └── database.sqlite         # SQLite database (OAuth tokens)
 │   ├── services/
 │   │   └── gmailService.js         # Gmail API, OAuth, MIME extraction & HTML stripping
 │   ├── tests/
