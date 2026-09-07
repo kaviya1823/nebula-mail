@@ -147,13 +147,13 @@ Nebula Mail enforces a strict **Human-in-the-Loop** safety policy:
      - Authorized JavaScript origins: `http://localhost:5000`, `http://localhost:5173`
      - Authorized redirect URIs: `http://localhost:5000/auth/google/callback`
 2. **Backend Configuration**:
-   - Copy `.env.example` to `backend/.env`.
-   - Fill in your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+   - Create `backend/.env` using `backend/.env.example`.
+   - Provide your own `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `GOOGLE_REDIRECT_URI` (`http://localhost:5000/auth/google/callback`).
 3. **Authorization Flow**:
    - Start the backend server (`node backend/server.js`).
-   - Open `http://localhost:5000/auth/google` in your browser.
+   - Open `http://localhost:5000/auth/google` in your browser to authorize your own Google/Gmail account using your own Google Cloud OAuth application.
    - Sign in with your test Gmail account and grant permissions.
-   - Tokens will be saved automatically to `backend/db/nebula_mail.db` (`oauth_tokens` table).
+   - Tokens will be saved automatically to `backend/db/database.sqlite` (`oauth_tokens` table).
 
 ---
 
