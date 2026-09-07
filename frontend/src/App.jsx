@@ -6,6 +6,8 @@ import Compose from "./components/Compose";
 import AssistantEmailPreview from "./components/AssistantEmailPreview";
 import { actionRegistry } from "./assistant/assistantActions";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("nebula-theme") || "light");
   
@@ -56,7 +58,7 @@ function App() {
 
   const fetchUnreadCount = useCallback(async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/emails/unread-count");
+      const res = await fetch(`${API_BASE_URL}/api/emails/unread-count`);
       const data = await res.json();
       if (data.success) setUnreadCount(data.count);
     } catch (err) {
@@ -78,7 +80,7 @@ function App() {
     }
     
     try {
-      let url = `http://localhost:5000/api/emails/${view}`;
+      let url = `${API_BASE_URL}/api/emails/${view}`;
       const catToUse = category || activeCategory;
       if (view === "inbox" && catToUse && catToUse !== "primary") {
         url += `?category=${encodeURIComponent(catToUse)}`;
@@ -130,7 +132,7 @@ function App() {
 
   // Real-time Push Notification Sync via Server-Sent Events (SSE)
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:5000/api/events");
+    const eventSource = new EventSource(`${API_BASE_URL}/api/events`);
 
     eventSource.addEventListener("gmail:new-mail", () => {
       console.log("Real-time Gmail push notification received!");
@@ -217,7 +219,7 @@ function App() {
     }
     
     try {
-      let url = `http://localhost:5000/api/emails/search?q=${encodeURIComponent(query)}`;
+      let url = `${API_BASE_URL}/api/emails/search?q=${encodeURIComponent(query)}`;
       if (pageToken) url += `&pageToken=${pageToken}`;
       
       const response = await fetch(url);
@@ -302,7 +304,7 @@ function App() {
   const openDraft = useCallback(async (id) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/emails/drafts/${id}`);
+      const res = await fetch(`${API_BASE_URL}/api/emails/drafts/${id}`);
       const data = await res.json();
       if (data.success && data.draft) {
         setComposeDraft({
@@ -449,7 +451,7 @@ function App() {
       openEmail(emailId);
       let fullEmail = null;
       try {
-        const detailRes = await fetch(`http://localhost:5000/api/emails/${emailId}`);
+        const detailRes = await fetch(`${API_BASE_URL}/api/emails/${emailId}`);
         const detailData = await detailRes.json();
         if (detailData.success && detailData.email) {
           setCurrentEmail(detailData.email);
@@ -473,7 +475,7 @@ function App() {
         return { success: false, error: "Invalid or missing query parameter" };
       }
       try {
-        const response = await fetch(`http://localhost:5000/api/emails/search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`${API_BASE_URL}/api/emails/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
         if (data.success && data.emails && data.emails.length > 0) {
           const latestEmail = data.emails[0];
@@ -489,7 +491,7 @@ function App() {
           };
 
           try {
-            const detailRes = await fetch(`http://localhost:5000/api/emails/${latestEmail.id}`);
+            const detailRes = await fetch(`${API_BASE_URL}/api/emails/${latestEmail.id}`);
             const detailData = await detailRes.json();
             if (detailData.success && detailData.email) {
               setCurrentEmail(detailData.email);
@@ -659,7 +661,7 @@ function App() {
       };
 
       try {
-        const detailRes = await fetch(`http://localhost:5000/api/emails/${targetEmail.id}`);
+        const detailRes = await fetch(`${API_BASE_URL}/api/emails/${targetEmail.id}`);
         const detailData = await detailRes.json();
         if (detailData.success && detailData.email) {
           setCurrentEmail(detailData.email);
@@ -811,7 +813,7 @@ function App() {
       while (keepLooping && stepCount < maxSteps) {
         stepCount++;
 
-        const response = await fetch("http://localhost:5000/api/assistant", {
+        const response = await fetch(`${API_BASE_URL}/api/assistant`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -932,7 +934,7 @@ function App() {
     setIsAssistantLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/emails/send", {
+      const response = await fetch(`${API_BASE_URL}/api/emails/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(composeDraft)

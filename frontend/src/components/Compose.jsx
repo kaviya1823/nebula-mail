@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 function Compose({ onCancel, onSuccess, draft, setDraft }) {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -20,7 +22,7 @@ function Compose({ onCancel, onSuccess, draft, setDraft }) {
     setSending(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/emails/send", {
+      const response = await fetch(`${API_BASE_URL}/api/emails/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

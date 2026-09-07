@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 function HtmlEmailViewer({ htmlContent }) {
   const iframeRef = useRef(null);
   const [iframeHeight, setIframeHeight] = useState("400px");
@@ -97,7 +99,7 @@ function EmailDetail({ emailId, onBack, onMessageRead, onEmailLoaded, onReply, o
     setThreadMessages([]);
     setExpandedIds({});
 
-    fetch(`http://localhost:5000/api/emails/${emailId}`)
+    fetch(`${API_BASE_URL}/api/emails/${emailId}`)
       .then((response) => response.json())
       .then((data) => {
         if (!isMounted) return;
@@ -107,7 +109,7 @@ function EmailDetail({ emailId, onBack, onMessageRead, onEmailLoaded, onReply, o
           if (onEmailLoaded) onEmailLoaded(loadedEmail);
 
           if (loadedEmail.unread) {
-            fetch(`http://localhost:5000/api/emails/${emailId}/read`, { method: "POST" })
+            fetch(`${API_BASE_URL}/api/emails/${emailId}/read`, { method: "POST" })
               .then(() => {
                 if (isMounted && onMessageRead) onMessageRead();
               })
@@ -116,7 +118,7 @@ function EmailDetail({ emailId, onBack, onMessageRead, onEmailLoaded, onReply, o
 
           const threadId = loadedEmail.threadId;
           if (threadId) {
-            fetch(`http://localhost:5000/api/threads/${threadId}`)
+            fetch(`${API_BASE_URL}/api/threads/${threadId}`)
               .then(res => res.json())
               .then(threadData => {
                 if (!isMounted) return;
