@@ -348,7 +348,7 @@ app.post("/api/assistant", async (req, res) => {
             return res.status(500).json({ type: "error", message: "Assistant is not configured. Missing API key." });
         }
         
-        const openRouterModel = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-lite-preview-02-05:free";
+        const openRouterModel = process.env.OPENROUTER_MODEL || "openrouter/free";
         
         const today = new Date().toISOString().split('T')[0];
         const systemPrompt = `You are the Nebula Mail AI Assistant. You control the user's mail application.
